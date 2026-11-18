@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>TikTok sign-in | Every Dex Entry</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .code { display: block; width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.06); color: var(--text); font: 15px/1.4 ui-monospace, Consolas, monospace; word-break: break-all; }
+    button { margin-top: 14px; padding: 10px 20px; border: 0; border-radius: 999px; background: var(--accent); color: #0b1020; font: inherit; font-weight: 700; cursor: pointer; }
+  </style>
+</head>
+<body>
+<main>
+  <header class="brand"><a href="./">EVERY DEX ENTRY</a></header>
+
+  <h1>TikTok sign-in</h1>
+  <p class="lead" id="message">This page finishes the channel owner's TikTok sign-in for Every Dex Entry Publisher. There is nothing to do here unless you were sent from TikTok.</p>
+
+  <div id="result" hidden>
+    <p>Copy this one-time code and give it to the setup step. It only works once, for a few minutes, and only together with the app's secret.</p>
+    <textarea class="code" id="code" rows="4" readonly></textarea>
+    <button type="button" id="copy">Copy code</button>
+  </div>
+
+  <footer>
+    <nav><a href="./">Home</a><a href="privacy.html">Privacy policy</a><a href="terms.html">Terms of service</a></nav>
+    Unofficial fan channel. Pokémon and all related names are trademarks of Nintendo, Creatures Inc. and GAME FREAK inc. This site is not affiliated with or endorsed by them.
+  </footer>
+</main>
+<script>
+  // Nothing is sent anywhere: the code TikTok put in the address is only shown for copying.
+  const params = new URLSearchParams(location.search);
+  const message = document.getElementById('message');
+  if (params.get('error')) {
+    message.textContent = 'TikTok did not complete the sign-in: ' + (params.get('error_description') || params.get('error'));
+  } else if (params.get('code')) {
+    message.textContent = 'TikTok sign-in approved.';
+    document.getElementById('code').value = params.get('code');
+    document.getElementById('result').hidden = false;
+    document.getElementById('copy').addEventListener('click', async () => {
+      const box = document.getElementById('code');
+      try { await navigator.clipboard.writeText(box.value); document.getElementById('copy').textContent = 'Copied'; }
+      catch { box.select(); }
+    });
+  }
+</script>
+</body>
+</html>
